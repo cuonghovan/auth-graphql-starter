@@ -23,6 +23,7 @@ class AuthForm extends React.Component {
         <form className='col s6' onSubmit={this.onSubmit.bind(this)}>
           <div className='input-field'>
             <input
+              type='text'
               placeholder='Email'
               value={this.state.email}
               onChange={e => this.setState({ email: e.target.value })}
@@ -30,6 +31,7 @@ class AuthForm extends React.Component {
           </div>
           <div className='input-field'>
             <input
+              type='password'
               placeholder='Password'
               value={this.state.password}
               onChange={e => this.setState({ password: e.target.value })}
