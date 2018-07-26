@@ -4,6 +4,7 @@ import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { ApolloProvider, Ap } from 'react-apollo';
 import { Router, hashHistory, Route, IndexRoute  } from 'react-router';
 
+import requireAuth from './components/requireAuth';
 import App from './components/App';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
@@ -28,7 +29,7 @@ const Root = () => {
         <Route path='/' component={App}>
           <Route path='/login' component={LoginForm} />
           <Route path='/signup' component={SignupForm} />
-          <Route path='/dashboard' component={Dashboard} />
+          <Route path='/dashboard' component={requireAuth(Dashboard)} />
         </Route>
       </Router>
     </ApolloProvider>
