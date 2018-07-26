@@ -29,13 +29,14 @@ passport.deserializeUser((id, done) => {
 passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
   User.findOne({ email: email.toLowerCase() }, (err, user) => {
     if (err) { return done(err); }
-    if (!user) { return done(null, false, 'Invalid Credentials'); }
+    if (!user) { return done(null, false, 'Email does not exist.'); }
     user.comparePassword(password, (err, isMatch) => {
       if (err) { return done(err); }
-      if (isMatch) {
-        return done(null, user);
+      if (!isMatch) {
+        return done(null, false, 'Wrong password.');
       }
-      return done(null, false, 'Invalid credentials.');
+
+      return done(null, user);
     });
   });
 }));
@@ -73,8 +74,8 @@ function signup({ email, password, req }) {
 // GraphQL, as GraphQL always expects to see a promise for handling async code.
 function login({ email, password, req }) {
   return new Promise((resolve, reject) => {
-    passport.authenticate('local', (err, user) => {
-      if (!user) { reject('Invalid credentials.') }
+    passport.authenticate('local', (err, user, info) => {
+      if (!user) { reject(info) }
 
       req.login(user, () => resolve(user));
     })({ body: { email, password } });
